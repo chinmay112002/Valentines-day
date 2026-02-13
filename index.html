@@ -1,249 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>For My Harshi ❤️</title>
+<title>Our Love Story</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  overflow-x:hidden;
-  text-align:center;
-  background:black;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: black;
+    overflow: hidden;
+    color: white;
 }
 
-/* START SCREEN */
-#startScreen {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:linear-gradient(to bottom,#ff99cc,#ff1a75);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:20;
-  color:white;
+.page {
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.glowBtn {
-  padding:18px 45px;
-  font-size:22px;
-  border:none;
-  border-radius:50px;
-  background:white;
-  color:#ff1a75;
-  cursor:pointer;
-  margin-top:25px;
-  animation:glow 1.5s infinite alternate;
+.active {
+    display: flex;
 }
 
-@keyframes glow {
-  from {box-shadow:0 0 10px white;}
-  to {box-shadow:0 0 30px white;}
-}
-
-/* VIDEO */
-#intro {
-  display:none;
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:black;
-  z-index:15;
-}
-
-#intro video {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* MAIN */
-#mainContent {
-  display:none;
-  background:linear-gradient(to bottom,#ffe6f0,#ffccdd);
-  padding-bottom:80px;
+video {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
 }
 
 h1 {
-  color:#ff0066;
-  margin-top:30px;
-  font-size:42px;
-  animation:fadeIn 2s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(30px);}
-  to {opacity:1; transform:translateY(0);}
-}
-
-.section {
-  margin:40px 0;
+    color: #ff66b2;
 }
 
 img {
-  width:300px;
-  border-radius:20px;
-  box-shadow:0px 10px 25px rgba(0,0,0,0.2);
-  transition:0.4s;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 20px pink;
 }
 
-img:hover {
-  transform:scale(1.08);
+button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background-color: #ff3399;
+    color: white;
+    cursor: pointer;
 }
 
-.love-text {
-  max-width:800px;
-  margin:auto;
-  padding:20px;
-  font-size:22px;
-  color:#660033;
-  line-height:1.8;
-  min-height:120px;
-}
-
-/* PLAYFUL BUTTON */
-#surpriseBtn {
-  padding:15px 35px;
-  font-size:18px;
-  border:none;
-  border-radius:40px;
-  background:#ff3399;
-  color:white;
-  cursor:pointer;
-  position:relative;
-}
-
-/* FLOATING HEARTS */
-.heart {
-  position:fixed;
-  color:#ff4da6;
-  animation:float 6s linear infinite;
-}
-
-@keyframes float {
-  0% {transform:translateY(100vh);}
-  100% {transform:translateY(-10vh);}
-}
-
-/* FIREWORK */
-.firework {
-  position:fixed;
-  font-size:30px;
-  animation:explode 1s ease-out forwards;
-}
-
-@keyframes explode {
-  from {transform:scale(0); opacity:1;}
-  to {transform:scale(3); opacity:0;}
+button:hover {
+    background-color: #ff0066;
 }
 </style>
 </head>
 
 <body>
 
-<!-- START -->
-<div id="startScreen">
-  <h1>For My Harshi ❤️</h1>
-  <button class="glowBtn" onclick="startExperience()">Tap to Start 💕</button>
+<!-- PAGE 1 - INTRO VIDEO -->
+<div class="page active" id="page1">
+    <video id="introVideo" autoplay muted>
+        <source src="intro.mp4.mp4" type="video/mp4">
+    </video>
 </div>
 
-<!-- VIDEO -->
-<div id="intro">
-  <video id="introVideo">
-    <source src="intro.mp4" type="video/mp4">
-  </video>
+<!-- PAGE 2 -->
+<div class="page" id="page2" style="background:linear-gradient(#ffe6f0,#ffccdd);">
+    <h1>Our Beautiful Moment 💕</h1>
+    <img src="image1.jpg">
+    <button onclick="nextPage(3)">Next</button>
 </div>
 
-<!-- MAIN -->
-<div id="mainContent">
-
-<h1>Happy Valentine's Day, Harshi ❤️</h1>
-
-<div class="section">
-  <img src="image1.jpg">
+<!-- PAGE 3 -->
+<div class="page" id="page3" style="background:linear-gradient(#ffe6f0,#ffccdd);">
+    <h1>Another Memory ❤️</h1>
+    <img src="image2.jpg.PNG">
+    <button onclick="nextPage(4)">Next</button>
 </div>
 
-<div class="section love-text" id="typingText"></div>
-
-<div class="section">
-  <img src="image2.jpg.PNG">
-</div>
-
-<div class="section">
-  <img src="image3.jpg">
-</div>
-
-<br><br>
-
-<button id="surpriseBtn" onmouseover="moveButton()" onclick="celebrateLove()">Catch Me If You Can 😜</button>
-
-<audio id="bgMusic" loop>
-  <source src="love.mp3.mp3" type="audio/mpeg">
-</audio>
-
+<!-- PAGE 4 -->
+<div class="page" id="page4" style="background:linear-gradient(#ffe6f0,#ffccdd);">
+    <h1>Forever With You 💘</h1>
+    <img src="image3.jpg">
+    <p>I Love You Always 💗</p>
 </div>
 
 <script>
-function startExperience(){
-  document.getElementById("startScreen").style.display="none";
-  document.getElementById("intro").style.display="block";
-  const video=document.getElementById("introVideo");
-  video.play();
+let video = document.getElementById("introVideo");
 
-  video.onended=function(){
-    document.getElementById("intro").style.display="none";
-    document.getElementById("mainContent").style.display="block";
-    document.getElementById("bgMusic").play();
-    typeLoveText();
-  }
-}
+video.onended = function() {
+    nextPage(2);
+};
 
-/* TYPING EFFECT */
-const message = "This is our first Valentine's Day together... ❤️\n\nI have completely fallen for you.\nEvery smile, every moment feels magical.\n\nYou are my sun, my moon, and all my stars.\n\nI love you forever, Harshi. — Your Chinmay 💕";
-let i=0;
-function typeLoveText(){
-  if(i<message.length){
-    document.getElementById("typingText").innerHTML += message.charAt(i);
-    i++;
-    setTimeout(typeLoveText,50);
-  }
+function nextPage(pageNumber) {
+    let pages = document.getElementsByClassName("page");
+    for (let i = 0; i < pages.length; i++) {
+        pages[i].classList.remove("active");
+    }
+    document.getElementById("page" + pageNumber).classList.add("active");
 }
-
-/* MOVING BUTTON */
-function moveButton(){
-  const btn=document.getElementById("surpriseBtn");
-  btn.style.position="absolute";
-  btn.style.left=Math.random()*80+"%";
-  btn.style.top=Math.random()*80+"%";
-}
-
-/* CELEBRATION */
-function celebrateLove(){
-  alert("You caught me 😍 I love you so much Harshi ❤️");
-  for(let j=0;j<30;j++){
-    const fw=document.createElement("div");
-    fw.classList.add("firework");
-    fw.innerHTML="💖";
-    fw.style.left=Math.random()*100+"vw";
-    fw.style.top=Math.random()*100+"vh";
-    document.body.appendChild(fw);
-    setTimeout(()=>fw.remove(),1000);
-  }
-}
-
-/* FLOAT HEARTS */
-function createHeart(){
-  const heart=document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML="❤️";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=Math.random()*20+20+"px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
-}
-setInterval(createHeart,500);
 </script>
 
 </body>
