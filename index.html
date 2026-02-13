@@ -96,7 +96,6 @@ button:active { transform: scale(0.95); }
 
 <body>
 
-<!-- Background Music -->
 <audio id="bgMusic" preload="auto" loop>
     <source src="love.mp3" type="audio/mp3">
 </audio>
@@ -114,38 +113,42 @@ button:active { transform: scale(0.95); }
     </video>
 </div>
 
-<!-- IMAGE PAGES -->
+<!-- PAGE 3 -->
 <div class="page romantic" id="page3">
     <h1>Our Beautiful Moment 💕</h1>
     <img src="image1.jpg">
     <button onclick="nextPage(4)">Next</button>
 </div>
 
+<!-- PAGE 4 -->
 <div class="page romantic" id="page4">
     <h1>Another Memory ❤️</h1>
     <img src="image2.jpg.PNG">
     <button onclick="nextPage(5)">Next</button>
 </div>
 
+<!-- PAGE 5 -->
 <div class="page romantic" id="page5">
     <h1>Forever With You 💘</h1>
     <img src="image3.jpg.PNG">
     <button onclick="nextPage(6)">More 💞</button>
 </div>
 
+<!-- PAGE 6 -->
 <div class="page romantic" id="page6">
     <h1>Another Piece of My Heart 💖</h1>
     <img src="image4.jpg.PNG">
     <button onclick="nextPage(7)">Next</button>
 </div>
 
+<!-- PAGE 7 -->
 <div class="page romantic" id="page7">
     <h1>Still Falling For You 💘</h1>
     <img src="image5.jpg">
     <button onclick="nextPage(8)">One Last Question 💍</button>
 </div>
 
-<!-- FINAL PAGE -->
+<!-- PAGE 8 -->
 <div class="page romantic" id="page8">
     <h1>Will You Always Be Mine? 💍💖</h1>
     <button onclick="sayYes()">Yes 💘</button>
@@ -156,29 +159,27 @@ let currentPage = 1;
 const music = document.getElementById("bgMusic");
 const video = document.getElementById("introVideo");
 
-/* Start experience (iOS SAFE) */
 function startExperience() {
     music.currentTime = 0;
     music.play().catch(()=>{});
-
     nextPage(2);
-
+    music.pause(); // iOS rule
     video.muted = false;
     video.currentTime = 0;
     video.play().catch(()=>{});
 }
 
-/* After video */
-video.onended = () => nextPage(3);
+video.onended = () => {
+    music.play().catch(()=>{});
+    nextPage(3);
+};
 
-/* Page switch */
 function nextPage(n) {
     document.getElementById("page" + currentPage).classList.remove("active");
     document.getElementById("page" + n).classList.add("active");
     currentPage = n;
 }
 
-/* Floating hearts */
 setInterval(() => {
     const h = document.createElement("div");
     h.className = "heart";
@@ -188,14 +189,9 @@ setInterval(() => {
     setTimeout(() => h.remove(), 6000);
 }, 900);
 
-/* Fireworks */
 function sayYes() {
-    for (let i = 0; i < 6; i++) {
-        setTimeout(createFirework, i * 400);
-    }
-    setTimeout(() => {
-        alert("You just made me the happiest person alive 💕🥹");
-    }, 2500);
+    for (let i = 0; i < 6; i++) setTimeout(createFirework, i * 400);
+    setTimeout(() => alert("You just made me the happiest person alive 💕🥹"), 2500);
 }
 
 function createFirework() {
