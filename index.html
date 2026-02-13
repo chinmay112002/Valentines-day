@@ -1,109 +1,208 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Our Love Story</title>
+<title>For My Harshi ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: black;
-    overflow: hidden;
-    color: white;
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
+  background:black;
 }
 
-.page {
-    display: none;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* PAGES CONTAINER */
+#storyContainer{
+  display:flex;
+  width:400%;
+  height:100vh;
+  transition:transform 0.6s ease-in-out;
 }
 
-.active {
-    display: flex;
+/* EACH PAGE */
+.page{
+  width:100vw;
+  height:100vh;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  box-sizing:border-box;
 }
 
-video {
-    width: 100%;
-    height: 100vh;
-    object-fit: cover;
+/* START PAGE */
+#startPage{
+  background:linear-gradient(to bottom,#ff99cc,#ff1a75);
+  color:white;
 }
 
-h1 {
-    color: #ff66b2;
+.glowBtn{
+  padding:18px 45px;
+  font-size:22px;
+  border:none;
+  border-radius:50px;
+  background:white;
+  color:#ff1a75;
+  cursor:pointer;
+  animation:glow 1.5s infinite alternate;
+}
+@keyframes glow{
+  from{box-shadow:0 0 10px white;}
+  to{box-shadow:0 0 30px white;}
 }
 
-img {
-    width: 80%;
-    max-width: 400px;
-    border-radius: 20px;
-    margin-top: 20px;
-    box-shadow: 0 0 20px pink;
+/* VIDEO PAGE */
+#videoPage{
+  background:black;
+}
+#videoPage video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-button {
-    margin-top: 30px;
-    padding: 12px 25px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    background-color: #ff3399;
-    color: white;
-    cursor: pointer;
+/* LOVE PAGES */
+.lovePage{
+  background:linear-gradient(to bottom,#ffe6f0,#ffccdd);
 }
 
-button:hover {
-    background-color: #ff0066;
+img{
+  width:300px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  margin-top:20px;
+}
+
+p{
+  font-size:22px;
+  color:#660033;
+  margin-top:20px;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  background:#ff3399;
+  color:white;
+  font-size:18px;
+  margin-top:25px;
+  cursor:pointer;
+}
+
+/* HEARTS */
+.heart{
+  position:fixed;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(100vh);}
+  100%{transform:translateY(-10vh);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- PAGE 1 - INTRO VIDEO -->
-<div class="page active" id="page1">
-    <video id="introVideo" autoplay muted>
-        <source src="intro.mp4" type="video/mp4">
+<div id="storyContainer">
+
+  <!-- PAGE 0 START -->
+  <div class="page" id="startPage">
+    <h1>For My Harshi ❤️</h1>
+    <button class="glowBtn" onclick="goToVideo()">Tap to Start 💕</button>
+  </div>
+
+  <!-- PAGE 1 VIDEO -->
+  <div class="page" id="videoPage">
+    <video id="introVideo" playsinline>
+      <source src="intro.mp4" type="video/mp4">
     </video>
-</div>
+  </div>
 
-<!-- PAGE 2 -->
-<div class="page" id="page2" style="background:linear-gradient(#ffe6f0,#ffccdd);">
-    <h1>Our Beautiful Moment 💕</h1>
+  <!-- PAGE 2 -->
+  <div class="page lovePage">
     <img src="image1.jpg">
-    <button onclick="nextPage(3)">Next</button>
-</div>
+    <p>You are the reason my world feels brighter every day ❤️</p>
+  </div>
 
-<!-- PAGE 3 -->
-<div class="page" id="page3" style="background:linear-gradient(#ffe6f0,#ffccdd);">
-    <h1>Another Memory ❤️</h1>
+  <!-- PAGE 3 -->
+  <div class="page lovePage">
     <img src="image2.jpg.PNG">
-    <button onclick="nextPage(4)">Next</button>
+    <p>Every moment with you feels like magic ✨</p>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="page lovePage">
+    <img src="image3.jpg">
+    <p>I love you today, tomorrow, and forever ❤️</p>
+    <button onclick="celebrate()">Click For Surprise 💕</button>
+  </div>
+
 </div>
 
-<!-- PAGE 4 -->
-<div class="page" id="page4" style="background:linear-gradient(#ffe6f0,#ffccdd);">
-    <h1>Forever With You 💘</h1>
-    <img src="image3.jpg">
-    <p>I Love You Always 💗</p>
-</div>
+<audio id="bgMusic" loop>
+  <source src="love.mp3.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-let video = document.getElementById("introVideo");
+let currentPage = 0;
+const container = document.getElementById("storyContainer");
 
-video.onended = function() {
-    nextPage(2);
-};
+function updateSlide(){
+  container.style.transform = `translateX(-${currentPage * 100}vw)`;
+}
 
-function nextPage(pageNumber) {
-    let pages = document.getElementsByClassName("page");
-    for (let i = 0; i < pages.length; i++) {
-        pages[i].classList.remove("active");
-    }
-    document.getElementById("page" + pageNumber).classList.add("active");
+function goToVideo(){
+  currentPage = 1;
+  updateSlide();
+
+  const video = document.getElementById("introVideo");
+  video.play();
+
+  video.onended = function(){
+    currentPage = 2;
+    updateSlide();
+    document.getElementById("bgMusic").play();
+  }
+}
+
+/* SWIPE FUNCTION */
+let startX = 0;
+
+document.addEventListener("touchstart", function(e){
+  startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", function(e){
+  let endX = e.changedTouches[0].clientX;
+  let diff = startX - endX;
+
+  if(diff > 50 && currentPage < 4){
+    currentPage++;
+    updateSlide();
+  }
+  if(diff < -50 && currentPage > 0){
+    currentPage--;
+    updateSlide();
+  }
+});
+
+/* CELEBRATION */
+function celebrate(){
+  alert("Forever yours, Harshi ❤️ — Chinmay");
+  for(let i=0;i<25;i++){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="💖";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=Math.random()*20+20+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+  }
 }
 </script>
 
