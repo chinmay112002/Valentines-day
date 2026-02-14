@@ -5,85 +5,80 @@
 <title>Our Love Story ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Romantic Font -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
 <style>
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    font-family: 'Pacifico', cursive;
+    background: black;
 }
 
 /* Pages */
 .page {
     position: absolute;
     inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     transform: translateX(100%);
-    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
-    opacity: 0;
+    transition: transform 0.6s ease;
 }
 .page.active {
     transform: translateX(0);
-    opacity: 1;
 }
 
-/* Romantic fallback background */
-.romantic {
-    background: linear-gradient(to bottom, #ffe6f0, #ffccdd);
-}
-
-/* FULLSCREEN IMAGES */
+/* Fullscreen images */
 .page img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 1;
 }
 
-/* Dark overlay for readability */
-.page::after {
-    content: "";
+/* Bottom caption */
+.caption {
     position: absolute;
-    inset: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 25px 20px 40px;
     background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.35),
-        rgba(0,0,0,0.65)
+        to top,
+        rgba(0,0,0,0.75),
+        rgba(0,0,0,0.2),
+        transparent
     );
-    z-index: 2;
+    text-align: center;
+    color: white;
+}
+
+/* Hide controls until tap */
+.caption button {
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.page.showControls .caption button {
+    opacity: 1;
 }
 
 /* Text */
-h1 {
-    color: #ff3399;
-    text-shadow: 0 0 10px black;
-    text-align: center;
-    z-index: 3;
-    padding: 10px 20px;
-    background: rgba(255,255,255,0.7);
-    border-radius: 25px;
+.caption h1 {
+    margin-bottom: 15px;
+    font-size: 28px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
 /* Buttons */
 button {
-    margin-top: 25px;
-    padding: 12px 30px;
+    padding: 10px 28px;
     font-size: 18px;
     border: none;
     border-radius: 30px;
-    background-color: #ff3399;
+    background: #ff3399;
     color: white;
     cursor: pointer;
-    z-index: 3;
-}
-button:active {
-    transform: scale(0.95);
 }
 
 /* Video */
@@ -96,10 +91,10 @@ video {
 /* Floating hearts */
 .heart {
     position: fixed;
-    font-size: 20px;
+    font-size: 18px;
     pointer-events: none;
     animation: floatUp 6s linear infinite;
-    z-index: 5;
+    z-index: 10;
 }
 @keyframes floatUp {
     from { transform: translateY(100vh); opacity: 1; }
@@ -110,7 +105,7 @@ video {
 .firework {
     position: fixed;
     pointer-events: none;
-    z-index: 10;
+    z-index: 20;
 }
 .spark {
     position: absolute;
@@ -124,13 +119,15 @@ video {
     to { transform: translate(var(--x), var(--y)); opacity: 0; }
 }
 
-/* Slow zoom (romantic effect) */
-@keyframes slowZoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.08); }
-}
-.page.active img {
-    animation: slowZoom 12s ease-in-out forwards;
+/* Engraved footer */
+.footer {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    z-index: 30;
 }
 </style>
 </head>
@@ -138,11 +135,15 @@ video {
 <body>
 
 <audio id="bgMusic" loop>
-    <source src="love.mp3.mp3" type="audio/mpeg">
+    <source src="love.mp3" type="audio/mpeg">
 </audio>
 
+<div class="footer">
+    YOUR NAME ❤️ THEIR NAME — DATE
+</div>
+
 <!-- PAGE 1 -->
-<div class="page active" id="page1" style="background:black;color:white;">
+<div class="page active" id="page1" style="display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;">
     <h1>Tap To Start ❤️</h1>
     <button onclick="startExperience()">Start</button>
 </div>
@@ -154,70 +155,100 @@ video {
     </video>
 </div>
 
-<!-- PAGE 3 -->
-<div class="page romantic" id="page3">
+<!-- IMAGE PAGES -->
+<div class="page" id="page3">
     <img src="image1.jpg">
-    <h1>Our Beautiful Moment 💕</h1>
-    <button onclick="nextPage(4)">Next</button>
+    <div class="caption">
+        <h1>Our Beautiful Moment 💕</h1>
+        <button onclick="nextPage()">Next</button>
+    </div>
 </div>
 
-<!-- PAGE 4 -->
-<div class="page romantic" id="page4">
-    <img src="image2.jpg.PNG">
-    <h1>Another Memory ❤️</h1>
-    <button onclick="nextPage(5)">Next</button>
+<div class="page" id="page4">
+    <img src="image2.png">
+    <div class="caption">
+        <h1>Another Memory ❤️</h1>
+        <button onclick="nextPage()">Next</button>
+    </div>
 </div>
 
-<!-- PAGE 5 -->
-<div class="page romantic" id="page5">
-    <img src="image3.jpg.PNG">
-    <h1>Forever With You 💘</h1>
-    <button onclick="nextPage(6)">More 💞</button>
+<div class="page" id="page5">
+    <img src="image3.png">
+    <div class="caption">
+        <h1>Forever With You 💘</h1>
+        <button onclick="nextPage()">Next</button>
+    </div>
 </div>
 
-<!-- PAGE 6 -->
-<div class="page romantic" id="page6">
-    <img src="image4.jpg.PNG">
-    <h1>Another Piece of My Heart 💖</h1>
-    <button onclick="nextPage(7)">Next</button>
+<div class="page" id="page6">
+    <img src="image4.png">
+    <div class="caption">
+        <h1>Another Piece of My Heart 💖</h1>
+        <button onclick="nextPage()">Next</button>
+    </div>
 </div>
 
-<!-- PAGE 7 -->
-<div class="page romantic" id="page7">
+<div class="page" id="page7">
     <img src="image5.jpg">
-    <h1>Still Falling For You 💘</h1>
-    <button onclick="nextPage(8)">One Last Question 💍</button>
+    <div class="caption">
+        <h1>Still Falling For You 💘</h1>
+        <button onclick="nextPage()">One Last Question 💍</button>
+    </div>
 </div>
 
-<!-- PAGE 8 -->
-<div class="page romantic" id="page8">
+<!-- FINAL PAGE -->
+<div class="page" id="page8" style="display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(#ffccdd,#ffe6f0);">
     <h1>Will You Always Be Mine? 💍💖</h1>
     <button onclick="sayYes()">Yes 💘</button>
 </div>
 
 <script>
-let currentPage = 1;
-const music = document.getElementById("bgMusic");
+let current = 1;
+const total = 8;
 const video = document.getElementById("introVideo");
+const music = document.getElementById("bgMusic");
 
+/* Start */
 function startExperience() {
-    nextPage(2);
+    showPage(2);
     video.muted = false;
     video.play().catch(()=>{});
 }
 
 video.onended = () => {
     music.play().catch(()=>{});
-    nextPage(3);
+    showPage(3);
 };
 
-function nextPage(n) {
-    document.getElementById("page" + currentPage).classList.remove("active");
-    document.getElementById("page" + n).classList.add("active");
-    currentPage = n;
+function showPage(n) {
+    document.getElementById("page" + current)?.classList.remove("active");
+    document.getElementById("page" + n)?.classList.add("active");
+    current = n;
 }
 
-/* Floating hearts */
+/* Buttons auto-hide / show */
+document.querySelectorAll(".page").forEach(p => {
+    p.addEventListener("click", () => {
+        p.classList.add("showControls");
+        setTimeout(() => p.classList.remove("showControls"), 2500);
+    });
+});
+
+/* Next */
+function nextPage() {
+    if (current < total) showPage(current + 1);
+}
+
+/* Swipe navigation */
+let startX = 0;
+document.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+document.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+    if (endX < startX - 50 && current < total) showPage(current + 1);
+    if (endX > startX + 50 && current > 3) showPage(current - 1);
+});
+
+/* Hearts */
 setInterval(() => {
     const h = document.createElement("div");
     h.className = "heart";
@@ -227,35 +258,35 @@ setInterval(() => {
     setTimeout(() => h.remove(), 6000);
 }, 900);
 
+/* Yes */
 function sayYes() {
-    for (let i = 0; i < 6; i++) setTimeout(createFirework, i * 400);
-    setTimeout(showFinalMessage, 2000);
+    for (let i = 0; i < 6; i++) setTimeout(firework, i * 400);
+    setTimeout(() => {
+        document.body.innerHTML += `
+        <div style="
+            position:fixed;
+            inset:0;
+            background:linear-gradient(#ffccdd,#ffe6f0);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:30px;
+            color:#ff3399;
+            text-align:center;
+            z-index:9999;
+            padding:30px;
+        ">
+            You just made me the happiest person alive 💕🥹
+        </div>`;
+    }, 1800);
 }
 
-function showFinalMessage() {
-    document.body.innerHTML += `
-    <div style="
-        position:fixed;
-        inset:0;
-        background:linear-gradient(#ffccdd,#ffe6f0);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        font-size:28px;
-        color:#ff3399;
-        text-align:center;
-        z-index:9999;
-        padding:30px;
-    ">
-        You just made me the happiest person alive 💕🥹
-    </div>`;
-}
-
-function createFirework() {
+/* Fireworks */
+function firework() {
     const fw = document.createElement("div");
     fw.className = "firework";
-    fw.style.left = Math.random() * window.innerWidth + "px";
-    fw.style.top = Math.random() * window.innerHeight * 0.6 + "px";
+    fw.style.left = Math.random() * innerWidth + "px";
+    fw.style.top = Math.random() * innerHeight * 0.6 + "px";
     document.body.appendChild(fw);
 
     for (let i = 0; i < 30; i++) {
