@@ -6,8 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
+html, body {
     margin: 0;
+    padding: 0;
+    height: 100%;
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
@@ -15,56 +17,81 @@ body {
 /* Pages */
 .page {
     position: absolute;
-    width: 100%;
-    height: 100vh;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     transform: translateX(100%);
-    transition: 0.8s ease-in-out;
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    opacity: 0;
 }
-.page.active { transform: translateX(0); }
+.page.active {
+    transform: translateX(0);
+    opacity: 1;
+}
 
-/* Backgrounds */
+/* Romantic fallback background */
 .romantic {
     background: linear-gradient(to bottom, #ffe6f0, #ffccdd);
 }
 
-/* Video */
-video {
+/* FULLSCREEN IMAGES */
+.page img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
+    z-index: 1;
 }
 
-/* Images */
-img {
-    width: 80%;
-    max-width: 380px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px pink;
+/* Dark overlay for readability */
+.page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35),
+        rgba(0,0,0,0.65)
+    );
+    z-index: 2;
 }
 
 /* Text */
 h1 {
     color: #ff3399;
-    text-shadow: 0 0 10px white;
+    text-shadow: 0 0 10px black;
     text-align: center;
+    z-index: 3;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 25px;
 }
 
 /* Buttons */
 button {
-    margin-top: 30px;
-    padding: 12px 25px;
+    margin-top: 25px;
+    padding: 12px 30px;
     font-size: 18px;
     border: none;
     border-radius: 30px;
     background-color: #ff3399;
     color: white;
     cursor: pointer;
+    z-index: 3;
 }
-button:active { transform: scale(0.95); }
+button:active {
+    transform: scale(0.95);
+}
+
+/* Video */
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 /* Floating hearts */
 .heart {
@@ -72,6 +99,7 @@ button:active { transform: scale(0.95); }
     font-size: 20px;
     pointer-events: none;
     animation: floatUp 6s linear infinite;
+    z-index: 5;
 }
 @keyframes floatUp {
     from { transform: translateY(100vh); opacity: 1; }
@@ -79,7 +107,11 @@ button:active { transform: scale(0.95); }
 }
 
 /* Fireworks */
-.firework { position: fixed; pointer-events: none; }
+.firework {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+}
 .spark {
     position: absolute;
     width: 4px;
@@ -91,13 +123,22 @@ button:active { transform: scale(0.95); }
 @keyframes explode {
     to { transform: translate(var(--x), var(--y)); opacity: 0; }
 }
+
+/* Slow zoom (romantic effect) */
+@keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+}
+.page.active img {
+    animation: slowZoom 12s ease-in-out forwards;
+}
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" preload="auto" loop>
-    <source src="love.mp3.mp3" type="audio/mp3">
+<audio id="bgMusic" loop>
+    <source src="love.mp3" type="audio/mpeg">
 </audio>
 
 <!-- PAGE 1 -->
@@ -108,43 +149,43 @@ button:active { transform: scale(0.95); }
 
 <!-- PAGE 2 -->
 <div class="page" id="page2">
-    <video id="introVideo" playsinline muted controls>
+    <video id="introVideo" playsinline muted>
         <source src="intro.mp4" type="video/mp4">
     </video>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page romantic" id="page3">
-    <h1>Our Beautiful Moment 💕</h1>
     <img src="image1.jpg">
+    <h1>Our Beautiful Moment 💕</h1>
     <button onclick="nextPage(4)">Next</button>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page romantic" id="page4">
+    <img src="image2.png">
     <h1>Another Memory ❤️</h1>
-    <img src="image2.jpg.PNG">
     <button onclick="nextPage(5)">Next</button>
 </div>
 
 <!-- PAGE 5 -->
 <div class="page romantic" id="page5">
+    <img src="image3.png">
     <h1>Forever With You 💘</h1>
-    <img src="image3.jpg.PNG">
     <button onclick="nextPage(6)">More 💞</button>
 </div>
 
 <!-- PAGE 6 -->
 <div class="page romantic" id="page6">
+    <img src="image4.png">
     <h1>Another Piece of My Heart 💖</h1>
-    <img src="image4.jpg.PNG">
     <button onclick="nextPage(7)">Next</button>
 </div>
 
 <!-- PAGE 7 -->
 <div class="page romantic" id="page7">
-    <h1>Still Falling For You 💘</h1>
     <img src="image5.jpg">
+    <h1>Still Falling For You 💘</h1>
     <button onclick="nextPage(8)">One Last Question 💍</button>
 </div>
 
@@ -160,12 +201,8 @@ const music = document.getElementById("bgMusic");
 const video = document.getElementById("introVideo");
 
 function startExperience() {
-    music.currentTime = 0;
-    music.play().catch(()=>{});
     nextPage(2);
-    music.pause(); // iOS rule
     video.muted = false;
-    video.currentTime = 0;
     video.play().catch(()=>{});
 }
 
@@ -180,6 +217,7 @@ function nextPage(n) {
     currentPage = n;
 }
 
+/* Floating hearts */
 setInterval(() => {
     const h = document.createElement("div");
     h.className = "heart";
@@ -191,7 +229,26 @@ setInterval(() => {
 
 function sayYes() {
     for (let i = 0; i < 6; i++) setTimeout(createFirework, i * 400);
-    setTimeout(() => alert("You just made me the happiest person alive 💕🥹"), 2500);
+    setTimeout(showFinalMessage, 2000);
+}
+
+function showFinalMessage() {
+    document.body.innerHTML += `
+    <div style="
+        position:fixed;
+        inset:0;
+        background:linear-gradient(#ffccdd,#ffe6f0);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:28px;
+        color:#ff3399;
+        text-align:center;
+        z-index:9999;
+        padding:30px;
+    ">
+        You just made me the happiest person alive 💕🥹
+    </div>`;
 }
 
 function createFirework() {
